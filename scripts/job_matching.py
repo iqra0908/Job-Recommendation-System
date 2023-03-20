@@ -1,4 +1,3 @@
-import spacy
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
@@ -43,23 +42,22 @@ class JobMatching:
         vectorizer = TfidfVectorizer()
         resume_vector = vectorizer.fit_transform([resume])
 
-        desc_similarity_scores = []
-        req_similarity_scores = []
+        similarity_scores = []
+        #req_similarity_scores = []
         for i in range(len(jobs)):
-            job_description_vector = vectorizer.transform([jobs['JobDescription'].iloc[i]])
-            job_requirement_vector = vectorizer.transform([jobs['JobRequirment'].iloc[i]])
-            desc_similarity = cosine_similarity(resume_vector, job_description_vector)[0][0]
-            req_similarity = cosine_similarity(resume_vector, job_requirement_vector)[0][0]
-            desc_similarity_scores.append(desc_similarity)
-            req_similarity_scores.append(req_similarity)
+            job_vector = vectorizer.transform([jobs['jobpost'].iloc[i]])
+            #job_requirement_vector = vectorizer.transform([jobs['JobRequirment'].iloc[i]])
+            similarity = cosine_similarity(resume_vector, job_vector)[0][0]
+            #req_similarity = cosine_similarity(resume_vector, job_requirement_vector)[0][0]
+            similarity_scores.append(similarity)
+            #req_similarity_scores.append(req_similarity)
             
-        jobs['desc_similarity'] = desc_similarity_scores
-        jobs['req_similarity'] = req_similarity_scores
+        jobs['cosine_similarity'] = similarity_scores
         
     def get_jobs_matched(self,resume):
         jobs = self.jobs
         self.cosine_similarity(resume,jobs)
-        jobs = jobs.sort_values(by=['desc_similarity','req_similarity'], ascending=False)
+        jobs = jobs.sort_values(by=['cosine_similarity'], ascending=False)
         jobs = jobs[['date','Title','Company','Eligibility','Location','JobDescription','JobRequirment','RequiredQual','ApplicationP']]
         return jobs.head(20).to_dict(orient='records')
         
