@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Job Matching based on Resume</title>
+	<style>
+	body {
+		background-color: #f2f2f2;
+		font-family: Arial, sans-serif;
+		padding: 20px;
+	}
+	
+	h1 {
+		text-align: center;
+		margin-bottom: 20px;
+		color: #444;
+		text-shadow: 1px 1px #ccc;
+	}
+	
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		margin-top: 20px;
+		background-color: #fff;
+		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+		border-radius: 10px;
+		overflow: hidden;
+		text-align: left;
+	}
+	
+	th, td {
+		padding: 10px;
+		text-align: left;
+		border-bottom: 1px solid #ddd;
+	}
+	
+	th {
+		background-color: #e6e6e6;
+		color: #444;
+		text-shadow: 1px 1px #ccc;
+	}
+	
+	td {
+		color: #666;
+	}
+	
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+	
+	.highlight {
+		background-color: yellow;
+	}
+	
+	.filter-form {
+		margin-bottom: 20px;
+	}
+	
+	.filter-heading {
+		font-size: 20px;
+		margin-bottom: 10px;
+		color: #444;
+		text-shadow: 1px 1px #ccc;
+		font-weight: bold;
+		text-align: center;
+	}
+	
+	.filter-input {
+		background-color: #fff;
+		color: #666;
+		border: none;
+		padding: 10px;
+		font-size: 10px;
+		border-radius: 10px;
+		margin-right: 10px;
+		width: 70%;
+		height: 200px;
+		resize: vertical;
+		white-space: pre-wrap;
+	}	
+	
+	.filter-submit {
+		background-color: blue;
+		color: #fff;
+		border: none;
+		padding: 10px;
+		font-size: 18px;
+		border-radius: 10px;
+		margin-bottom: 20px;
+		width: 10%;
+		cursor: pointer;
+	}	
+	</style>
+</head>
+<body>
+	<h1>Job Matching based on Resume</h1>
+
+	<form class="filter-form">
+		<label class="filter-heading" for="resume">Add Resume Text:</label>
+		<br>
+		<textarea id="resume" class="filter-input" name="resume"></textarea>
+		<br>
+		<input type="submit" class="filter-submit" value="Match Jobs">
+	</form>
+
+	<table>
+		<thead>
+			<tr>
+				<th>date</th>
+				<th>Title</th>
+				<th>Company</th>
+				<th>Eligibility</th>
+				<th>Location</th>
+				<th>JobDescription</th>
+				<th>JobRequirment</th>
+				<th>RequiredQual</th>
+				<th>ApplicationP</th>
+			</tr>
+		</thead>
+		<tbody id="job-posts-body"></tbody>
+	</table>
+
+	<script>
+		const jobPostsBody = document.getElementById('job-posts-body');
+		const loadingDiv = document.getElementById('loading');
+		
+		function renderjobs(jobs) {
+			jobPostsBody.innerHTML = '';
+			jobs.forEach(job => {
+				const row = document.createElement('tr');
+				const dateCell = document.createElement('td');
+				const titleCell = document.createElement('td');
+				const companyCell = document.createElement('td');
+				const eligibilityCell = document.createElement('td');
+				const locationCell = document.createElement('td');
+				const jobDescriptionCell = document.createElement('td');
+				const jobRequirementCell = document.createElement('td');
+				const requiredQualCell = document.createElement('td');
+				const applicationPCell = document.createElement('td');
+		
+                dateCell.textContent = job.date;
+                titleCell.textContent = job.Title;
+				companyCell.textContent = job.Company;
+                eligibilityCell.textContent = job.Eligibility;
+                locationCell.textContent = job.Location;
+                jobDescriptionCell.textContent = job.JobDescription;
+                jobRequirementCell.textContent = job.JobRequirment;
+                requiredQualCell.textContent = job.RequiredQual;
+                applicationPCell.textContent = job.ApplicationP;
+
+				const matchedresume = job.matchedresume || [];
+		
+                row.appendChild(dateCell);
+                row.appendChild(titleCell);
+				row.appendChild(companyCell);
+                row.appendChild(eligibilityCell);
+                row.appendChild(locationCell);
+                row.appendChild(jobDescriptionCell);
+                row.appendChild(jobRequirementCell);
+                row.appendChild(requiredQualCell);
+                row.appendChild(applicationPCell);
+                
+				jobPostsBody.appendChild(row);
+			});
+		}		
+		  
+		function getFilteredjobs(resume) {
+			fetch('/jobsByResume', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({resume: resume})
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				renderjobs(data);
+			});
+		}
+
+		fetch('/jobs')
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				renderjobs(data);
+			});
+
+		const filterForm = document.querySelector('form');
+		filterForm.addEventListener('submit', event => {
+			event.preventDefault();
+			const resumeInput = document.getElementById('resume');
+			const resume = resumeInput.value;
+			getFilteredjobs(resume);
+		});
+	</script>
+</body>
+</html>
