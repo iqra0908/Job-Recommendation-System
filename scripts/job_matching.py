@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-#sys.path.append('../')
 
 class JobMatching:
     def __init__(self):
@@ -64,11 +63,8 @@ class JobMatching:
 if __name__ == '__main__':
     job_matching = JobMatching()
     resume = job_matching.load_resume()
-    jobs = job_matching.load_jobs()
-    #job_matching.keyword_matching(resume,jobs)
-    job_matching.cosine_similarity(resume,jobs)
-    print(jobs[jobs['desc_similarity'] > 0.5])
-    #print(jobs[jobs['keywords_match']])
+    results = job_matching.get_jobs_matched(resume)
+    print(results)
     
 
         
