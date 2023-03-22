@@ -1,4 +1,4 @@
-# Job-Recommendation-System
+# Project 3: Job-Recommendation-System 
 
 ## Job Matching
 
@@ -12,6 +12,9 @@ To run this code, you will need to have the following installed:
 - pandas
 - numpy
 - scikit-learn (sklearn)
+
+### Deployment
+The code is deployed on AWS Athena to train and evaluate the model that pulls data from S3.
 
 ### Usage
 
