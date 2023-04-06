@@ -110,15 +110,31 @@
 	<table>
 		<thead>
 			<tr>
-				<th>date</th>
-				<th>Title</th>
-				<th>Company</th>
-				<th>Eligibility</th>
+				<th>Job Title</th>
+				<th>Job Description</th>
+				<th>Job Type</th>
+				<th>Categories</th>
 				<th>Location</th>
-				<th>JobDescription</th>
-				<th>JobRequirment</th>
-				<th>RequiredQual</th>
-				<th>ApplicationP</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Country</th>
+				<!--<th>Zip Code</th>
+				<th>Address</th>
+				<th>Salary From</th>
+				<th>Salary To</th>
+				<th>Salary Period</th>
+				<th>Apply Url</th>
+				<th>Apply Email</th>
+				<th>Employees</th>
+				<th>Industry</th>
+				<th>Company Name</th>
+				<th>Employer Email</th>
+				<th>Employer Website</th>
+				<th>Employer Phone</th>
+				<th>Employer Logo</th>
+				<th>Company Description</th>
+				<th>Uniq Id</th>
+				<th>Crawl Timestamp</th>-->
 			</tr>
 		</thead>
 		<tbody id="job-posts-body"></tbody>
@@ -135,81 +151,86 @@
 			jobPostsBody.innerHTML = "";
 			jobs.forEach((job) => {
 			  const row = document.createElement("tr");
-			  const dateCell = document.createElement("td");
-			  const titleCell = document.createElement("td");
-			  const companyCell = document.createElement("td");
-			  const eligibilityCell = document.createElement("td");
-			  const locationCell = document.createElement("td");
+			  const jobTitleCell = document.createElement("td");
 			  const jobDescriptionCell = document.createElement("td");
-			  const jobRequirementCell = document.createElement("td");
-			  const requiredQualCell = document.createElement("td");
-			  const applicationPCell = document.createElement("td");
+			  const jobTypeCell = document.createElement("td");
+			  const categoriesCell = document.createElement("td");
+			  const locationCell = document.createElement("td");
+			  const cityCell = document.createElement("td");
+			  const stateCell = document.createElement("td");
+			  const countryCell = document.createElement("td");
+			  /* const zipCodeCell = document.createElement("td");
+			  const addressCell = document.createElement("td");
+			  const salaryFromCell = document.createElement("td");
+			  const salaryToCell = document.createElement("td");
+			  const salaryPeriodCell = document.createElement("td");
+			  const applyUrlCell = document.createElement("td");
+			  const applyEmailCell = document.createElement("td");
+			  const employeesCell = document.createElement("td");
+			  const industryCell = document.createElement("td");
+			  const companyNameCell = document.createElement("td");
+			  const employerEmailCell = document.createElement("td");
+			  const employerWebsiteCell = document.createElement("td");
+			  const employerPhoneCell = document.createElement("td");
+			  const employerLogoCell = document.createElement("td");
+			  const companyDescriptionCell = document.createElement("td");
+			  const uniqIdCell = document.createElement("td");
+			  const crawlTimestampCell = document.createElement("td");*/
 		  
-			  dateCell.textContent = job.date;
-			  titleCell.textContent = job.Title;
-			  companyCell.textContent = job.Company;
-			  eligibilityCell.textContent = job.Eligibility;
+			  jobTitleCell.textContent = job.JobTitle;
+			  jobDescriptionCell.textContent = job.JobDescription;
+			  jobTypeCell.textContent = job.JobType;
+			  categoriesCell.textContent = job.Categories;
 			  locationCell.textContent = job.Location;
-			  
-			  // Display only the first 200 characters of the job description and add a "read more" button.
-			  if (job.JobDescription.length > MAX_LENGTH) {
-				jobDescriptionCell.textContent = job.JobDescription.slice(0, MAX_LENGTH) + "...";
-				const readMoreLink = document.createElement("a");
-				readMoreLink.textContent = "read more";
-				readMoreLink.href = "#";
-				readMoreLink.addEventListener("click", (event) => {
-				  event.preventDefault();
-				  jobDescriptionCell.textContent = job.JobDescription;
-				});
-				jobDescriptionCell.appendChild(document.createElement("br"));
-				jobDescriptionCell.appendChild(readMoreLink);
-			  } else {
-				jobDescriptionCell.textContent = job.JobDescription;
-			  }
-			  
-			  // Display only the first MAX_LENGTH characters of the job requirements and add a "read more" button.
-			  if (job.JobRequirment.length > MAX_LENGTH) {
-				jobRequirementCell.textContent = job.JobRequirment.slice(0, MAX_LENGTH) + "...";
-				const readMoreLink = document.createElement("a");
-				readMoreLink.textContent = "read more";
-				readMoreLink.href = "#";
-				readMoreLink.addEventListener("click", (event) => {
-				  event.preventDefault();
-				  jobRequirementCell.textContent = job.JobRequirment;
-				});
-				jobRequirementCell.appendChild(document.createElement("br"));
-				jobRequirementCell.appendChild(readMoreLink);
-			  } else {
-				jobRequirementCell.textContent = job.JobRequirment;
-			  }
-
-			  if (job.RequiredQual.length > MAX_LENGTH) {
-				requiredQualCell.textContent = job.RequiredQual.slice(0, MAX_LENGTH) + "...";
-				const readMoreLink = document.createElement("a");
-				readMoreLink.textContent = "read more";
-				readMoreLink.href = "#";
-				readMoreLink.addEventListener("click", (event) => {
-				  event.preventDefault();
-				  requiredQualCell.textContent = job.RequiredQual;
-				});
-				requiredQualCell.appendChild(document.createElement("br"));
-				requiredQualCell.appendChild(readMoreLink);
-			  } else {
-				requiredQualCell.textContent = job.RequiredQual;
-			  }
-			  applicationPCell.textContent = job.ApplicationP;
-		  
+			  cityCell.textContent = job.City;
+			  stateCell.textContent = job.State;
+			  countryCell.textContent = job.Country;
+			  /* zipCodeCell.textContent = job.ZipCode;
+			  addressCell.textContent = job.Address;
+			  salaryFromCell.textContent = job.SalaryFrom;
+			  salaryToCell.textContent = job.SalaryTo;
+			  salaryPeriodCell.textContent = job.SalaryPeriod;
+			  applyUrlCell.textContent = job.ApplyUrl;
+			  applyEmailCell.textContent = job.ApplyEmail;
+			  employeesCell.textContent = job.Employees;
+			  industryCell.textContent = job.Industry;
+			  companyNameCell.textContent = job.CompanyName;
+			  employerEmailCell.textContent = job.EmployerEmail;
+			  employerWebsiteCell.textContent = job.EmployerWebsite;
+			  employerPhoneCell.textContent = job.EmployerPhone;
+			  employerLogoCell.textContent = job.EmployerLogo;
+			  companyDescriptionCell.textContent = job.CompanyDescription;
+			  uniqIdCell.textContent = job.UniqId;
+			  crawlTimestampCell.textContent = job.CrawlTimestamp;*/
+				
 			  const matchedresume = job.matchedresume || [];
 		  
-			  row.appendChild(dateCell);
-			  row.appendChild(titleCell);
-			  row.appendChild(companyCell);
-			  row.appendChild(eligibilityCell);
-			  row.appendChild(locationCell);
+			  row.appendChild(jobTitleCell);
 			  row.appendChild(jobDescriptionCell);
-			  row.appendChild(jobRequirementCell);
-			  row.appendChild(requiredQualCell);
-			  row.appendChild(applicationPCell);
+			  row.appendChild(jobTypeCell);
+			  row.appendChild(categoriesCell);
+			  row.appendChild(locationCell);
+			  row.appendChild(cityCell);
+			  row.appendChild(stateCell);
+			  row.appendChild(countryCell);
+			  /* row.appendChild(zipCodeCell);
+			  row.appendChild(addressCell);
+			  row.appendChild(salaryFromCell);
+			  row.appendChild(salaryToCell);
+			  row.appendChild(salaryPeriodCell);
+			  /*row.appendChild(applyUrlCell);
+			  row.appendChild(applyEmailCell);
+			  row.appendChild(employeesCell);
+			  row.appendChild(industryCell);
+			  row.appendChild(companyNameCell);
+			  row.appendChild(employerEmailCell);
+			  row.appendChild(employerWebsiteCell);
+			  row.appendChild(employerPhoneCell);
+			  row.appendChild(employerLogoCell);
+			  row.appendChild(companyDescriptionCell);
+			  row.appendChild(uniqIdCell);
+			  row.appendChild(crawlTimestampCell);*/
+
 		  
 			  jobPostsBody.appendChild(row);
 			});

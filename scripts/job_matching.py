@@ -6,21 +6,29 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class JobMatching:
     def __init__(self):
-        self.jobs = self.load_jobs().head(500)
+        self.jobs = self.load_jobs()#.head(500)
+
     
     def load_resume(self):
         resume = open("data/Resume-Iqra-2023.txt").read()
         return resume
     
     def load_jobs(self):
-        jobs = pd.read_csv("data/job_posts.csv")
-        jobs.dropna(subset=['JobDescription','JobRequirment'], inplace=True)
+        jobs = pd.read_csv("data/dataworld-jobs.csv")
+        jobs.dropna(subset=['Job Description'], inplace=True)
         jobs.fillna('', inplace=True)
+        jobs = jobs.rename(columns={'Job Title': 'JobTitle', 'Job Description': 'JobDescription', 'Job Type':'JobType'})
         return jobs
     
     def get_all_jobs(self):
         jobs = self.jobs
-        jobs = jobs[['date','Title','Company','Eligibility','Location','JobDescription','JobRequirment','RequiredQual','ApplicationP']]
+        jobs = jobs[['JobTitle', 'JobDescription', 'JobType', 'Categories',
+       'Location', 'City', 'State', 'Country', 'Zip Code', 'Address',
+       'Salary From', 'Salary To', 'Salary Period', 'Apply Url', 'Apply Email',
+       'Employees', 'Industry', 'Company Name', 'Employer Email',
+       'Employer Website', 'Employer Phone', 'Employer Logo',
+       'Companydescription', 'Employer Location', 'Uniq Id',
+       'Crawl Timestamp']]
         return jobs.head(20).to_dict(orient='records')
     
     def keyword_matching(self,resume,jobs):
@@ -42,14 +50,10 @@ class JobMatching:
         resume_vector = vectorizer.fit_transform([resume])
 
         similarity_scores = []
-        #req_similarity_scores = []
         for i in range(len(jobs)):
-            job_vector = vectorizer.transform([jobs['jobpost'].iloc[i]])
-            #job_requirement_vector = vectorizer.transform([jobs['JobRequirment'].iloc[i]])
+            job_vector = vectorizer.transform([jobs['JobDescription'].iloc[i]])
             similarity = cosine_similarity(resume_vector, job_vector)[0][0]
-            #req_similarity = cosine_similarity(resume_vector, job_requirement_vector)[0][0]
             similarity_scores.append(similarity)
-            #req_similarity_scores.append(req_similarity)
             
         jobs['cosine_similarity'] = similarity_scores
         
@@ -57,7 +61,7 @@ class JobMatching:
         jobs = self.jobs
         self.cosine_similarity(resume,jobs)
         jobs = jobs.sort_values(by=['cosine_similarity'], ascending=False)
-        jobs = jobs[['date','Title','Company','Eligibility','Location','JobDescription','JobRequirment','RequiredQual','ApplicationP']]
+        #jobs = jobs[['date','Title','Company','Eligibility','Location','JobDescription','JobRequirment','RequiredQual','ApplicationP']]
         return jobs.head(20).to_dict(orient='records')
         
 if __name__ == '__main__':
