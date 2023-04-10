@@ -22,7 +22,7 @@ class JobMatching:
         return resume
     
     def load_jobs(self):
-        jobs = pd.read_csv("data/dataworld-jobs.csv")
+        jobs = pd.read_csv("data/dataworld-jobs-sample.csv")
         jobs.dropna(subset=['Job Description'], inplace=True)
         jobs.fillna('', inplace=True)
         jobs = jobs.rename(columns={'Job Title': 'JobTitle', 'Job Description': 'JobDescription', 'Job Type':'JobType'})
@@ -142,7 +142,7 @@ class JobMatching:
     def get_jobs_matched(self,resume):
         jobs = self.jobs
         self.cosine_similarity(resume,jobs)
-        self.siamese_scores(resume,jobs)
+        #self.siamese_scores(resume,jobs)
         jobs = jobs.sort_values(by=['cosine_similarity'], ascending=False)
         #jobs = jobs[['date','Title','Company','Eligibility','Location','JobDescription','JobRequirment','RequiredQual','ApplicationP']]
         return jobs.head(20).to_dict(orient='records')
