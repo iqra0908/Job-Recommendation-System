@@ -16,6 +16,9 @@ To run this code, you will need to have the following installed:
 ### Deployment
 The code is deployed on AWS Athena to train and evaluate the model that pulls data from S3.
 
+### Dataset
+https://data.world/promptcloud/indeed-job-posting-dataset
+
 ### Usage
 
 1. Save the `job_matching.py` file in your desired directory.
