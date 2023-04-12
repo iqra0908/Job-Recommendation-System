@@ -26,10 +26,12 @@ def getJobsMatchedWithResume():
     # Pass the resume data to the get_jobs_matched() function
     return job.get_jobs_matched(resume)
 
+if __name__ == "__main__":
+    app.run()
 # Azure Functions entry point
 
 
-def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
-    """Each request is redirected to the WSGI handler.
-    """
-    return func.WsgiMiddleware(app.wsgi_app).handle(req, context)
+#def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+#    """Each request is redirected to the WSGI handler.
+#    """
+#    return func.WsgiMiddleware(app.wsgi_app).handle(req, context)
