@@ -1,4 +1,6 @@
 import logging
+import sys
+sys.path.append('.')
 import azure.functions as func
 from scripts.job_matching import JobMatching
 from flask import Flask, request, render_template
