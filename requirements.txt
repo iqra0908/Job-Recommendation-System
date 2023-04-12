@@ -3,5 +3,4 @@ pandas
 numpy
 scikit-learn
 gensim
-tensorflow
 azure-functions
