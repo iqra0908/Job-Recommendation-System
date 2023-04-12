@@ -3,14 +3,14 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from gensim.models import Word2Vec
-from gensim.models.fasttext import FastText
-from keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from keras.layers import Input, Embedding, LSTM, Dense, Lambda
-from keras.models import Model
-from keras import backend as K
-import gensim.downloader as api
+#from gensim.models import Word2Vec
+#from gensim.models.fasttext import FastText
+#from keras.preprocessing.text import Tokenizer
+#from tensorflow.keras.preprocessing.sequence import pad_sequences
+#from keras.layers import Input, Embedding, LSTM, Dense, Lambda
+#from keras.models import Model
+#from keras import backend as K
+#import gensim.downloader as api
 
 class JobMatching:
     def __init__(self):
@@ -54,7 +54,7 @@ class JobMatching:
         jobs['keywords_match'] = keywords_match
         
 
-    def siamese_similarity(self, text1, text2):
+    '''def siamese_similarity(self, text1, text2):
         # Tokenize the texts
         tokenizer = Tokenizer()
         tokenizer.fit_on_texts([text1, text2])
@@ -125,7 +125,7 @@ class JobMatching:
             similarity_scores.append(similarity)
             
         jobs['siamese_similarity'] = similarity_scores
-        jobs = jobs.sort_values('siamese_similarity', ascending=False)
+        jobs = jobs.sort_values('siamese_similarity', ascending=False)'''
             
     def cosine_similarity(self,resume,jobs):
         vectorizer = TfidfVectorizer()

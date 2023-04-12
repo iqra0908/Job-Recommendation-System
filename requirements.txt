@@ -4,5 +4,4 @@ numpy
 scikit-learn
 gensim
 keras
-tensorflow
 azure-functions
