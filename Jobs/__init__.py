@@ -2,6 +2,7 @@ import logging
 import azure.functions as func
 from scripts.job_matching import JobMatching
 from flask import Flask, request, render_template
+import azure.functions as func
 
 app = Flask(__name__)
 job = JobMatching()
@@ -26,19 +27,9 @@ def getJobsMatchedWithResume():
     return job.get_jobs_matched(resume)
 
 # Azure Functions entry point
-def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
 
-    # get route
-    route = req.route_params.get('route')
-    if route == 'index':
-        return func.HttpResponse(index())
-    elif route == 'getJobs':
-        return func.HttpResponse(getJobs())
-    elif route == 'getJobsMatchedWithResume':
-        return func.HttpResponse(getJobsMatchedWithResume())
-    else:
-        return func.HttpResponse(
-             "Invalid route.",
-             status_code=400
-        )
+
+def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+    """Each request is redirected to the WSGI handler.
+    """
+    return func.WsgiMiddleware(app.wsgi_app).handle(req, context)
