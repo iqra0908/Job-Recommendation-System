@@ -2,4 +2,6 @@ Flask>=0.12
 pandas
 numpy
 scikit-learn
+gensim
+tensorflow
 azure-functions
