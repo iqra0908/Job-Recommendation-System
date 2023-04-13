@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Job Matching based on Resume</title>
+	<style>
+	body {
+		background-color: #f2f2f2;
+		font-family: Arial, sans-serif;
+		padding: 20px;
+	}
+	
+	h1 {
+		text-align: center;
+		margin-bottom: 20px;
+		color: blue;
+		text-shadow: 1px 1px #ccc;
+	}
+	
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		margin-top: 20px;
+		background-color: #fff;
+		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+		border-radius: 10px;
+		overflow: hidden;
+		text-align: left;
+	}
+	
+	th, td {
+		padding: 10px;
+		text-align: left;
+		border-bottom: 1px solid #ddd;
+	}
+	
+	th {
+		background-color: #e6e6e6;
+		color: #444;
+		text-shadow: 1px 1px #ccc;
+	}
+
+	tbody td {
+		vertical-align: top;
+	}
+	
+	td {
+		color: #666;
+	}
+	
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+	
+	.highlight {
+		background-color: yellow;
+	}
+	
+	.filter-form {
+		margin-bottom: 20px;
+	}
+	
+	.filter-heading {
+		font-size: 20px;
+		margin-bottom: 10px;
+		color: #444;
+		text-shadow: 1px 1px #ccc;
+		font-weight: bold;
+		text-align: center;
+	}
+	
+	.filter-input {
+		background-color: #fff;
+		color: #666;
+		border: none;
+		padding: 10px;
+		font-size: 10px;
+		border-radius: 10px;
+		margin-right: 10px;
+		width: 100%;
+		height: 150px;
+		resize: vertical;
+		white-space: pre-wrap;
+	}	
+	
+	.filter-submit {
+		background-color: blue;
+		color: #fff;
+		border: none;
+		padding: 10px;
+		font-size: 18px;
+		border-radius: 10px;
+		margin-bottom: 20px;
+		width: 10%;
+		cursor: pointer;
+	}	
+	</style>
+</head>
+<body>
+	<h1>Job Matching based on Resume</h1>
+
+	<form class="filter-form">
+		<label class="filter-heading" for="resume">Add Resume Text:</label>
+		<br>
+		<textarea id="resume" class="filter-input" name="resume"></textarea>
+		<br>
+		<input type="submit" class="filter-submit" value="Match Jobs">
+	</form>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Job Title</th>
+				<th>Job Description</th>
+				<th>Job Type</th>
+				<th>Categories</th>
+				<th>Location</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Country</th>
+				<!--<th>Zip Code</th>
+				<th>Address</th>
+				<th>Salary From</th>
+				<th>Salary To</th>
+				<th>Salary Period</th>
+				<th>Apply Url</th>
+				<th>Apply Email</th>
+				<th>Employees</th>
+				<th>Industry</th>
+				<th>Company Name</th>
+				<th>Employer Email</th>
+				<th>Employer Website</th>
+				<th>Employer Phone</th>
+				<th>Employer Logo</th>
+				<th>Company Description</th>
+				<th>Uniq Id</th>
+				<th>Crawl Timestamp</th>-->
+			</tr>
+		</thead>
+		<tbody id="job-posts-body"></tbody>
+	</table>
+
+	<script>
+		const jobPostsBody = document.getElementById('job-posts-body');
+		const loadingDiv = document.getElementById('loading');
+		
+		// define the maximum length of the text to show before truncating
+		const MAX_LENGTH = 100;
+		
+		function renderjobs(jobs) {
+			jobPostsBody.innerHTML = "";
+			jobs.forEach((job) => {
+			  const row = document.createElement("tr");
+			  const jobTitleCell = document.createElement("td");
+			  const jobDescriptionCell = document.createElement("td");
+			  const jobTypeCell = document.createElement("td");
+			  const categoriesCell = document.createElement("td");
+			  const locationCell = document.createElement("td");
+			  const cityCell = document.createElement("td");
+			  const stateCell = document.createElement("td");
+			  const countryCell = document.createElement("td");
+			  /* const zipCodeCell = document.createElement("td");
+			  const addressCell = document.createElement("td");
+			  const salaryFromCell = document.createElement("td");
+			  const salaryToCell = document.createElement("td");
+			  const salaryPeriodCell = document.createElement("td");
+			  const applyUrlCell = document.createElement("td");
+			  const applyEmailCell = document.createElement("td");
+			  const employeesCell = document.createElement("td");
+			  const industryCell = document.createElement("td");
+			  const companyNameCell = document.createElement("td");
+			  const employerEmailCell = document.createElement("td");
+			  const employerWebsiteCell = document.createElement("td");
+			  const employerPhoneCell = document.createElement("td");
+			  const employerLogoCell = document.createElement("td");
+			  const companyDescriptionCell = document.createElement("td");
+			  const uniqIdCell = document.createElement("td");
+			  const crawlTimestampCell = document.createElement("td");*/
+		  
+			  jobTitleCell.textContent = job.JobTitle;
+			  jobDescriptionCell.textContent = job.JobDescription;
+			  jobTypeCell.textContent = job.JobType;
+			  categoriesCell.textContent = job.Categories;
+			  locationCell.textContent = job.Location;
+			  cityCell.textContent = job.City;
+			  stateCell.textContent = job.State;
+			  countryCell.textContent = job.Country;
+			  /* zipCodeCell.textContent = job.ZipCode;
+			  addressCell.textContent = job.Address;
+			  salaryFromCell.textContent = job.SalaryFrom;
+			  salaryToCell.textContent = job.SalaryTo;
+			  salaryPeriodCell.textContent = job.SalaryPeriod;
+			  applyUrlCell.textContent = job.ApplyUrl;
+			  applyEmailCell.textContent = job.ApplyEmail;
+			  employeesCell.textContent = job.Employees;
+			  industryCell.textContent = job.Industry;
+			  companyNameCell.textContent = job.CompanyName;
+			  employerEmailCell.textContent = job.EmployerEmail;
+			  employerWebsiteCell.textContent = job.EmployerWebsite;
+			  employerPhoneCell.textContent = job.EmployerPhone;
+			  employerLogoCell.textContent = job.EmployerLogo;
+			  companyDescriptionCell.textContent = job.CompanyDescription;
+			  uniqIdCell.textContent = job.UniqId;
+			  crawlTimestampCell.textContent = job.CrawlTimestamp;*/
+				
+			  const matchedresume = job.matchedresume || [];
+		  
+			  row.appendChild(jobTitleCell);
+			  row.appendChild(jobDescriptionCell);
+			  row.appendChild(jobTypeCell);
+			  row.appendChild(categoriesCell);
+			  row.appendChild(locationCell);
+			  row.appendChild(cityCell);
+			  row.appendChild(stateCell);
+			  row.appendChild(countryCell);
+			  /* row.appendChild(zipCodeCell);
+			  row.appendChild(addressCell);
+			  row.appendChild(salaryFromCell);
+			  row.appendChild(salaryToCell);
+			  row.appendChild(salaryPeriodCell);
+			  /*row.appendChild(applyUrlCell);
+			  row.appendChild(applyEmailCell);
+			  row.appendChild(employeesCell);
+			  row.appendChild(industryCell);
+			  row.appendChild(companyNameCell);
+			  row.appendChild(employerEmailCell);
+			  row.appendChild(employerWebsiteCell);
+			  row.appendChild(employerPhoneCell);
+			  row.appendChild(employerLogoCell);
+			  row.appendChild(companyDescriptionCell);
+			  row.appendChild(uniqIdCell);
+			  row.appendChild(crawlTimestampCell);*/
+
+		  
+			  jobPostsBody.appendChild(row);
+			});
+		  }
+		  
+		function getFilteredjobs(resume) {
+			fetch('/jobsByResume', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({resume: resume})
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				renderjobs(data);
+			});
+		}
+
+		fetch('/jobs')
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				renderjobs(data);
+			});
+
+		const filterForm = document.querySelector('form');
+		filterForm.addEventListener('submit', event => {
+			event.preventDefault();
+			const resumeInput = document.getElementById('resume');
+			const resume = resumeInput.value;
+			getFilteredjobs(resume);
+		});
+	</script>
+</body>
+</html>

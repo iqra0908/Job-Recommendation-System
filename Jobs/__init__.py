@@ -3,10 +3,9 @@ sys.path.append('.')
 import azure.functions as func
 from flask import Flask, request, render_template
 from job_matching import JobMatching
-from azure.functions import WsgiMiddleware
 
-job = JobMatching()
 app = Flask(__name__)
+job = JobMatching()
 
 @app.route("/")
 def index():
@@ -27,14 +26,14 @@ def getJobsMatchedWithResume():
     # Pass the resume data to the get_jobs_matched() function
     return job.get_jobs_matched(resume)
 
-# Wrap the Flask app with the WsgiMiddleware
-app = WsgiMiddleware(app)
-
-def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
-    environ = dict(req.environ)
-    response = app(environ)
-    return func.HttpResponse(
-        body=response[0],
-        status_code=response[1],
-        headers=response[2]
-    )
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    with app.app_context():
+        response = app.make_response(index())
+        headers = {}
+        for key, value in response.headers.items():
+            headers[key] = value
+        return func.HttpResponse(
+            body=response.get_data(),
+            status_code=response.status_code,
+            headers=headers
+        )

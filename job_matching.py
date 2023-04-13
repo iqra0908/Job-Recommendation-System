@@ -3,6 +3,8 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import sys
+sys.path.append('.')
 #from gensim.models import Word2Vec
 #from gensim.models.fasttext import FastText
 #from keras.preprocessing.text import Tokenizer
@@ -14,7 +16,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class JobMatching:
     def __init__(self):
-        self.jobs = self.load_jobs()#.head(500)
+        self.jobs = self.load_jobs()
 
     
     def load_resume(self):
