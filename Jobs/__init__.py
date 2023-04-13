@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 import azure.functions as func
 from flask import Flask, request, render_template
 from job_matching import JobMatching
@@ -29,7 +31,7 @@ def getJobsMatchedWithResume():
 app = WsgiMiddleware(app)
 
 def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
-    environ = dict(req.get_environ())
+    environ = dict(req.environ)
     response = app(environ)
     return func.HttpResponse(
         body=response[0],
