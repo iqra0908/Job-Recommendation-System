@@ -1,13 +1,10 @@
-import logging
-import sys
-sys.path.append('.')
 import azure.functions as func
-from scripts.job_matching import JobMatching
 from flask import Flask, request, render_template
-import azure.functions as func
+from job_matching import JobMatching
+from azure.functions import WsgiMiddleware
 
-app = Flask(__name__)
 job = JobMatching()
+app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -28,5 +25,14 @@ def getJobsMatchedWithResume():
     # Pass the resume data to the get_jobs_matched() function
     return job.get_jobs_matched(resume)
 
-if __name__ == "__main__":
-    app.run()
+# Wrap the Flask app with the WsgiMiddleware
+app = WsgiMiddleware(app)
+
+def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+    environ = dict(req.get_environ())
+    response = app(environ)
+    return func.HttpResponse(
+        body=response[0],
+        status_code=response[1],
+        headers=response[2]
+    )
